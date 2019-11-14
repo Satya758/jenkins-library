@@ -1,16 +1,9 @@
-import com.sap.piper.SidecarUtils
-
-import static com.sap.piper.Prerequisites.checkScript
-
-import com.sap.piper.ConfigurationHelper
-import com.sap.piper.GenerateDocumentation
-import com.sap.piper.JenkinsUtils
-import com.sap.piper.Utils
+import com.sap.piper.*
 import com.sap.piper.k8s.SystemEnv
-import com.sap.piper.JsonUtils
-
 import groovy.transform.Field
 import hudson.AbortException
+
+import static com.sap.piper.Prerequisites.checkScript
 
 @Field def STEP_NAME = getClass().getName()
 @Field def PLUGIN_ID_KUBERNETES = 'kubernetes'
@@ -307,8 +300,10 @@ chown -R ${runAsUser}:${fsGroup} ."""
         stash(
             name: stashName,
             includes: includes,
-            excludes: excludes
+            excludes: excludes,
+            useDefaultExcludes: false
         )
+        // Was made active to support gradle configuration stash
         //inactive due to negative side-effects, we may require a dedicated git stash to be used
         //useDefaultExcludes: false)
         return stashName
